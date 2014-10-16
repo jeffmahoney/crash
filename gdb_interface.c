@@ -17,7 +17,7 @@
 
 #include "defs.h"
 
-#ifndef GDB_10_2
+#ifdef GDB_7_6
 static void exit_after_gdb_info(void);
 #endif
 static int is_restricted_command(char *, ulong);
@@ -71,7 +71,7 @@ gdb_main_loop(int argc, char **argv)
 	}
 
         optind = 0;
-#ifndef GDB_10_2
+#ifdef GDB_7_6
 	deprecated_command_loop_hook = main_loop;
 #endif
         gdb_main_entry(argc, argv);
@@ -83,7 +83,7 @@ gdb_main_loop(int argc, char **argv)
 void
 update_gdb_hooks(void)
 {
-#if defined(GDB_7_0) || defined(GDB_7_3_1) || defined(GDB_7_6)
+#ifdef GDB_7_6
 	deprecated_command_loop_hook = pc->flags & VERSION_QUERY ?
 		exit_after_gdb_info : main_loop;
 #endif
@@ -113,7 +113,7 @@ void
 display_gdb_banner(void)
 {
 	optind = 0;
-#ifndef GDB_10_2
+#ifdef GDB_7_6
         deprecated_command_loop_hook = exit_after_gdb_info;
 #endif
 	args[0] = "gdb";
@@ -121,7 +121,7 @@ display_gdb_banner(void)
 	gdb_main_entry(2, args);
 }
 
-#ifndef GDB_10_2
+#ifdef GDB_7_6
 static void
 exit_after_gdb_info(void)
 {
@@ -488,11 +488,7 @@ dump_gnu_request(struct gnu_request *req, int in_gdb)
 		console("name: %lx ", (ulong)req->name);
 	console("length: %ld ", req->length);
         console("typecode: %d\n", req->typecode);
-#if defined(GDB_7_0)
-	console("typename: %s\n", req->typename);
-#else
 	console("type_name: %s\n", req->type_name);
-#endif
 	console("target_typename: %s\n", req->target_typename);
 	console("target_length: %ld ", req->target_length);
 	console("target_typecode: %d ", req->target_typecode);

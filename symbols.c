@@ -17,10 +17,8 @@
 
 #include "defs.h"
 #include <elf.h>
-#if defined(GDB_7_6) || defined(GDB_10_2)
 #define __CONFIG_H__ 1
 #include "config.h"
-#endif
 #include "bfd.h"
 
 static void store_symbols(bfd *, int, void *, long, unsigned int);
@@ -440,13 +438,8 @@ separate_debug_file_exists(const char *name, unsigned long crc, int *exists)
 
 	*exists = TRUE;
   	while ((count = read(fd, buffer, sizeof(buffer))) > 0)
-#if defined(GDB_7_6) || defined(GDB_10_2)
     		file_crc = bfd_calc_gnu_debuglink_crc32(file_crc, 
 			(unsigned char *)buffer, count);
-#else
-    		file_crc = gnu_debuglink_crc32(file_crc, 
-			(unsigned char *)buffer, count);
-#endif
 
   	close (fd);
 
@@ -7073,11 +7066,7 @@ request_types(ulong lowest, ulong highest, char *member_name)
 	typereq.cnt = 16;
 	typereq.types = (void *)GETBUF(16 * sizeof(struct type_info));
 
-#if defined(GDB_7_0)
-	error(FATAL, "-r option not supported with this version of gdb\n");
-#else
 	request.type_name = member_name;
-#endif
 
         request.command = GNU_ITERATE_DATATYPES;
         request.lowest = lowest;

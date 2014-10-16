@@ -23,10 +23,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "xendump.h"
-#if defined(GDB_7_6) || defined(GDB_10_2)
 #define __CONFIG_H__ 1
 #include "config.h"
-#endif
 #include "bfd.h"
 
 static void do_module_cmd(ulong, char *, ulong, char *, char *);
