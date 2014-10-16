@@ -4981,13 +4981,12 @@ value_search(ulong value, ulong *offset)
  
         for ( ; sp < st->symend; sp++) {
                 if (value == sp->value) {
-#if !defined(GDB_6_0) && !defined(GDB_6_1)
 			if (STRNEQ(sp->name, ".text.")) {
 				spnext = sp+1;
 				if (spnext->value == value)
 					sp = spnext;
 			}
-#endif
+
                         if (offset) 
 				*offset = 0;
 
@@ -7074,7 +7073,7 @@ request_types(ulong lowest, ulong highest, char *member_name)
 	typereq.cnt = 16;
 	typereq.types = (void *)GETBUF(16 * sizeof(struct type_info));
 
-#if defined(GDB_6_0) || defined(GDB_6_1) || defined(GDB_7_0)
+#if defined(GDB_7_0)
 	error(FATAL, "-r option not supported with this version of gdb\n");
 #else
 	request.type_name = member_name;
@@ -11948,9 +11947,6 @@ add_symbol_file_kallsyms(struct load_module *lm, struct gnu_request *req)
 	char section_name[BUFSIZE/2];
 	ulong section_vaddr;
 
-#if defined(GDB_6_0) || defined(GDB_6_1)
-	return FALSE;
-#endif
 	if (!(st->flags & (MODSECT_VMASK|MODSECT_UNKNOWN))) {
 		STRUCT_SIZE_INIT(module_sect_attr, "module_sect_attr");
 		MEMBER_OFFSET_INIT(module_sect_attrs, 
