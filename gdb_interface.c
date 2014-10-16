@@ -72,7 +72,7 @@ gdb_main_loop(int argc, char **argv)
 
         optind = 0;
 #ifndef GDB_10_2
-#if defined(GDB_5_3) || defined(GDB_6_0) || defined(GDB_6_1)
+#if defined(GDB_6_0) || defined(GDB_6_1)
         command_loop_hook = main_loop;
 #else
 	deprecated_command_loop_hook = main_loop;
@@ -123,7 +123,7 @@ display_gdb_banner(void)
 {
 	optind = 0;
 #ifndef GDB_10_2
-#if defined(GDB_5_3) || defined(GDB_6_0) || defined(GDB_6_1)
+#if defined(GDB_6_0) || defined(GDB_6_1)
         command_loop_hook = exit_after_gdb_info;
 #else
         deprecated_command_loop_hook = exit_after_gdb_info;
@@ -182,7 +182,7 @@ gdb_session_init(void)
 	/*
 	 *  Set up pointers to gdb variables.
 	 */
-#if defined(GDB_5_3) || defined(GDB_6_0) || defined(GDB_6_1)
+#if defined(GDB_6_0) || defined(GDB_6_1)
 	gdb_output_format = &output_format;
 	gdb_print_max = &print_max;
 	gdb_prettyprint_structs = &prettyprint_structs;
@@ -230,9 +230,6 @@ gdb_session_init(void)
 	*gdb_prettyprint_structs = 1;
 	*gdb_repeat_count_threshold = 0x7fffffff;
 	*gdb_print_max = 256;
-#ifdef GDB_5_3
-	gdb_disassemble_from_exec = 0;
-#endif
 
 	pc->flags |= GDB_INIT;   /* set here so gdb_interface will work */
 
@@ -513,7 +510,7 @@ dump_gnu_request(struct gnu_request *req, int in_gdb)
 		console("name: %lx ", (ulong)req->name);
 	console("length: %ld ", req->length);
         console("typecode: %d\n", req->typecode);
-#if defined(GDB_5_3) || defined(GDB_6_0) || defined(GDB_6_1) || defined(GDB_7_0)
+#if defined(GDB_6_0) || defined(GDB_6_1) || defined(GDB_7_0)
 	console("typename: %s\n", req->typename);
 #else
 	console("type_name: %s\n", req->type_name);

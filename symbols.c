@@ -440,16 +440,12 @@ separate_debug_file_exists(const char *name, unsigned long crc, int *exists)
 
 	*exists = TRUE;
   	while ((count = read(fd, buffer, sizeof(buffer))) > 0)
-#ifdef GDB_5_3
-    		file_crc = calc_crc32(file_crc, buffer, count);
-#else
 #if defined(GDB_7_6) || defined(GDB_10_2)
     		file_crc = bfd_calc_gnu_debuglink_crc32(file_crc, 
 			(unsigned char *)buffer, count);
 #else
     		file_crc = gnu_debuglink_crc32(file_crc, 
 			(unsigned char *)buffer, count);
-#endif
 #endif
 
   	close (fd);
@@ -4114,11 +4110,8 @@ not_system_map:
 static int
 is_bfd_format(char *filename) 
 {
-#ifdef GDB_5_3
-        struct _bfd *bfd;
-#else
         struct bfd *bfd;
-#endif
+
         if ((bfd = bfd_openr(filename, NULL)) == NULL) 
                 return FALSE;
         
@@ -4134,11 +4127,7 @@ is_bfd_format(char *filename)
 static int
 is_binary_stripped(char *filename)
 {
-#ifdef GDB_5_3
-        struct _bfd *bfd;
-#else
         struct bfd *bfd;
-#endif
 	int number_of_symbols;
 
 	if ((bfd = bfd_openr(filename, NULL)) == NULL) {
@@ -4992,7 +4981,7 @@ value_search(ulong value, ulong *offset)
  
         for ( ; sp < st->symend; sp++) {
                 if (value == sp->value) {
-#if !defined(GDB_5_3) && !defined(GDB_6_0) && !defined(GDB_6_1)
+#if !defined(GDB_6_0) && !defined(GDB_6_1)
 			if (STRNEQ(sp->name, ".text.")) {
 				spnext = sp+1;
 				if (spnext->value == value)
@@ -7085,7 +7074,7 @@ request_types(ulong lowest, ulong highest, char *member_name)
 	typereq.cnt = 16;
 	typereq.types = (void *)GETBUF(16 * sizeof(struct type_info));
 
-#if defined(GDB_5_3) || defined(GDB_6_0) || defined(GDB_6_1) || defined(GDB_7_0)
+#if defined(GDB_6_0) || defined(GDB_6_1) || defined(GDB_7_0)
 	error(FATAL, "-r option not supported with this version of gdb\n");
 #else
 	request.type_name = member_name;
@@ -11959,7 +11948,7 @@ add_symbol_file_kallsyms(struct load_module *lm, struct gnu_request *req)
 	char section_name[BUFSIZE/2];
 	ulong section_vaddr;
 
-#if defined(GDB_5_3) || defined(GDB_6_0) || defined(GDB_6_1)
+#if defined(GDB_6_0) || defined(GDB_6_1)
 	return FALSE;
 #endif
 	if (!(st->flags & (MODSECT_VMASK|MODSECT_UNKNOWN))) {

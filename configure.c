@@ -176,13 +176,12 @@ void add_extra_lib(char *);
  *  unless overridden.
  */
 
-#define GDB_5_3   (0)
-#define GDB_6_0   (1)
-#define GDB_6_1   (2)
-#define GDB_7_0   (3)
-#define GDB_7_3_1 (4)
-#define GDB_7_6   (5)
-#define GDB_10_2   (6)
+#define GDB_6_0   (0)
+#define GDB_6_1   (1)
+#define GDB_7_0   (2)
+#define GDB_7_3_1 (3)
+#define GDB_7_6   (4)
+#define GDB_10_2   (5)
 #define SUPPORTED_GDB_VERSIONS (GDB_10_2 + 1)
 
 int default_gdb = GDB_10_2;
@@ -196,15 +195,6 @@ struct supported_gdb_version {
 	char *GDB_FLAGS;
 	char *GPL;
 } supported_gdb_versions[SUPPORTED_GDB_VERSIONS] = {
-	{
-	    "GDB=gdb-5.3post-0.20021129.36rh",
-	    "Red Hat Linux (5.3post-0.20021129.36rh)",
-	    "GDB_FILES=${GDB_5.3post-0.20021129.36rh_FILES}",	   
-	    "GDB_OFILES=${GDB_5.3post-0.20021129.36rh_OFILES}",
-	    "GDB_PATCH_FILES=",
-	    "GDB_FLAGS=-DGDB_5_3",
-	    "GPLv2"
-	},
 	{ 
 	    "GDB=gdb-6.0",
 	    "6.0",
@@ -1488,12 +1478,6 @@ setup_gdb_defaults(void)
 		/*
 		 *  Simple override.
 		 */
-		if (strcmp(buf, "5.3") == 0) {
-			fclose(fp);
-			sp = &supported_gdb_versions[GDB_5_3];
-			fprintf(stderr, ".gdb configuration: %s\n\n", sp->GDB_VERSION_IN);
-			return store_gdb_defaults(sp);
-		}
 		if (strcmp(buf, "6.0") == 0) {
 			fclose(fp);
 			sp = &supported_gdb_versions[GDB_6_0];
