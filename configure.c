@@ -751,9 +751,10 @@ build_configure(struct supported_gdb_version *sp)
                         fprintf(fp2, "%s\n", sp->GDB_OFILES);
 		else if (strncmp(buf, "GDB_PATCH_FILES=",strlen("GDB_PATCH_FILES=")) == 0)
                         fprintf(fp2, "%s\n", sp->GDB_PATCH_FILES);
-		else if (strncmp(buf, "GDB_FLAGS=",strlen("GDB_FLAGS=")) == 0)
-                        fprintf(fp2, "%s\n", sp->GDB_FLAGS);
-		else if (strncmp(buf, "GPL_FILES=", strlen("GPL_FILES=")) == 0)
+		else if (strncmp(buf, "GDB_FLAGS=",strlen("GDB_FLAGS=")) == 0) {
+                        fprintf(fp2, "%s -DGDB_BASE_VERSION=%d\n", sp->GDB_FLAGS,
+			sp - supported_gdb_versions);
+		} else if (strncmp(buf, "GPL_FILES=", strlen("GPL_FILES=")) == 0)
 			fprintf(fp2, "GPL_FILES=%s\n", strcmp(sp->GPL, "GPLv2") == 0 ? 
 				"COPYING" : "COPYING3");
                 else if (strncmp(buf, "GDB=", strlen("GDB=")) == 0) {
