@@ -222,7 +222,7 @@ gdb_unzip:
 
 gdb_patch:
 	if [ -f ${GDB}.patch ] && [ -s ${GDB}.patch ]; then \
-		patch -p0 < ${GDB}.patch; cp ${GDB}.patch ${GDB}; fi
+		patch -p1 -d ${GDB} < ${GDB}.patch; cp ${GDB}.patch ${GDB}; fi
 
 library: ${OBJECT_FILES}
 	ar -rs ${PROGRAM}lib.a ${OBJECT_FILES}
