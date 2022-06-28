@@ -204,7 +204,7 @@ rebuild:
 	  touch ${GDB}/${GDB}.patch; fi
 	@if [ -f ${GDB}.patch ] && [ -s ${GDB}.patch ] && \
 	  [ "`sum ${GDB}.patch`" != "`sum ${GDB}/${GDB}.patch`" ]; then \
-	  (sh -x ${GDB}.patch ${TARGET}; patch -N -p0 -r- --fuzz=0 < ${GDB}.patch; cp ${GDB}.patch ${GDB}; cd ${GDB}; \
+	  (sh -x ${GDB}.patch ${TARGET}; patch -d ${GDB} -N -p1 -r- --fuzz=0 < ${GDB}.patch; cp ${GDB}.patch ${GDB}; cd ${GDB}; \
 	  $(MAKE) CRASH_TARGET=${TARGET}) \
 	else (cd ${GDB}/gdb; $(MAKE) CRASH_TARGET=${TARGET}); fi
 
