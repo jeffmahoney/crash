@@ -178,9 +178,10 @@ void add_extra_lib(char *);
 
 #define GDB_7_6   (0)
 #define GDB_10_2   (1)
-#define SUPPORTED_GDB_VERSIONS (GDB_10_2 + 1)
+#define GDB_12_1   (2)
+#define SUPPORTED_GDB_VERSIONS (GDB_12_1 + 1)
 
-int default_gdb = GDB_10_2;
+int default_gdb = GDB_12_1;
 
 struct supported_gdb_version {
 	char *GDB;
@@ -207,6 +208,15 @@ struct supported_gdb_version {
             "GDB_OFILES=${GDB_10.2_OFILES}",
             "GDB_PATCH_FILES=gdb-10.2.patch",
             "GDB_FLAGS=-DGDB_10_2",
+            "GPLv3"
+        },
+        {
+            "GDB=gdb-12.1",
+            "12.1",
+            "GDB_FILES=${GDB_12.1_FILES}",
+            "GDB_OFILES=${GDB_12.1_OFILES}",
+            "GDB_PATCH_FILES=gdb-12.1.patch",
+            "GDB_FLAGS=-DGDB_12_1",
             "GPLv3"
         },
 };
@@ -1448,6 +1458,12 @@ setup_gdb_defaults(void)
                 if (strcmp(buf, "10.2") == 0) {
                         fclose(fp);
                         sp = &supported_gdb_versions[GDB_10_2];
+                        fprintf(stderr, ".gdb configuration: %s\n", sp->GDB_VERSION_IN);
+                        return store_gdb_defaults(sp);
+                }
+                if (strcmp(buf, "12.1") == 0) {
+                        fclose(fp);
+                        sp = &supported_gdb_versions[GDB_12_1];
                         fprintf(stderr, ".gdb configuration: %s\n", sp->GDB_VERSION_IN);
                         return store_gdb_defaults(sp);
                 }

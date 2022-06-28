@@ -116,7 +116,11 @@ crash_target_init (void)
   /* Own the target until it is successfully pushed.  */
   target_ops_up target_holder (target);
 
+#if GDB_BASE_VERSION >= GDB_12_1
+  current_inferior ()->push_target (std::move (target_holder));
+#else
   push_target (std::move (target_holder));
+#endif
 
   inferior_appeared (current_inferior (), CRASH_INFERIOR_PID);
   for (int i = 0; i < nr_cpus; i++)
